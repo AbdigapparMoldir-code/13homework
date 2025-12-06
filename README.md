@@ -29,4 +29,5 @@ stateDiagram-v2
 
     %% Optional transition
     MoneyReceived --> WaitingForMoney : Недостаточно денег / awaitMoreMoney()
+
 ```
