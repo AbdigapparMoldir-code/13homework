@@ -1,70 +1,57 @@
 ```mermaid
-%% Mermaid Use Case Diagram
-%% Library Network System
+flowchart LR
+    %% ==== ACTORS ====
+    Reader(["👤 Читатель"])
+    Librarian(["👤 Библиотекарь"])
+    Admin(["👤 Администратор"])
 
-usecaseDiagram
+    %% ==== INHERITANCE ====
+    Librarian -->|наследует| Reader
+    Admin -->|наследует| Librarian
 
-title Система управления сетью библиотек
+    %% ==== USE CASES ====
+    UC_Register(["(Регистрация пользователя)"])
+    UC_ViewSearch(["(Просмотр и поиск книг)"])
+    UC_Search(["<<include>> Поиск по автору/названию/жанру"])
+    UC_ViewAvailable(["<<include>> Просмотр доступных книг"])
+    UC_Reserve(["(Бронирование книги)"])
+    UC_CancelReserve(["(Отмена бронирования)"])
+    UC_History(["(Просмотр истории бронирований)"])
 
-%% === Actors ===
-actor Reader as "Читатель"
-actor Librarian as "Библиотекарь"
-actor Admin as "Администратор"
+    UC_ManageBooks(["(Управление книгами)"])
+    UC_LoanReturn(["(Учет выданных/возвращенных книг)"])
+    UC_ActiveRes(["(Просмотр активных бронирований)"])
+    UC_Catalog(["<<include>> Управление каталогом"])
 
-%% === Inheritance ===
-Librarian --|> Reader
-Admin --|> Librarian
+    UC_Branches(["(Управление филиалами)"])
+    UC_UserAccounts(["(Управление учетными записями)"])
+    UC_Analytics(["(Просмотр аналитики)"])
 
-%% === Use Cases (Reader) ===
-usecase UC_Register as "Регистрация пользователя"
-usecase UC_ViewSearch as "Просмотр и поиск книг"
-usecase UC_Search as "Поиск по автору/названию/жанру"
-usecase UC_ViewAvailable as "Просмотр доступных книг"
-usecase UC_Reserve as "Бронирование книги"
-usecase UC_CancelReserve as "Отмена бронирования"
-usecase UC_History as "Просмотр истории бронирований"
+    UC_EmailConfirm(["<<extend>> Подтверждение почты"])
 
-%% === Use Cases (Librarian) ===
-usecase UC_ManageBooks as "Управление книгами (добавление/удаление)"
-usecase UC_LoanReturn as "Учет выданных/возвращенных книг"
-usecase UC_ActiveRes as "Просмотр списка активных бронирований"
-usecase UC_Catalog as "Управление каталогом"
+    %% ==== CONNECTIONS Actor -> Use Cases ====
+    Reader --> UC_Register
+    Reader --> UC_ViewSearch
+    Reader --> UC_Reserve
+    Reader --> UC_CancelReserve
+    Reader --> UC_History
 
-%% === Use Cases (Admin) ===
-usecase UC_Branches as "Управление филиалами"
-usecase UC_UserAccounts as "Управление учетными записями"
-usecase UC_Analytics as "Просмотр аналитики"
+    Librarian --> UC_ManageBooks
+    Librarian --> UC_LoanReturn
+    Librarian --> UC_ActiveRes
+    Librarian --> UC_Catalog
 
-%% === Email confirmation (extend) ===
-usecase UC_EmailConfirm as "Подтверждение почты"
+    Admin --> UC_Branches
+    Admin --> UC_UserAccounts
+    Admin --> UC_Analytics
 
-%% === Actor → Use Case relations ===
-Reader --> UC_Register
-Reader --> UC_ViewSearch
-Reader --> UC_Reserve
-Reader --> UC_CancelReserve
-Reader --> UC_History
+    %% ==== INCLUDE RELATIONS ====
+    UC_ViewSearch --> UC_Search
+    UC_ViewSearch --> UC_ViewAvailable
+    UC_Reserve --> UC_Search
+    UC_Reserve --> UC_ViewAvailable
+    UC_ManageBooks --> UC_Catalog
 
-Librarian --> UC_ManageBooks
-Librarian --> UC_LoanReturn
-Librarian --> UC_ActiveRes
-Librarian --> UC_Catalog
-
-Admin --> UC_Branches
-Admin --> UC_UserAccounts
-Admin --> UC_Analytics
-
-%% === Include Relations ===
-UC_ViewSearch ..> UC_Search : <<include>>
-UC_ViewSearch ..> UC_ViewAvailable : <<include>>
-
-UC_Reserve ..> UC_Search : <<include>>
-UC_Reserve ..> UC_ViewAvailable : <<include>>
-
-UC_ManageBooks ..> UC_Catalog : <<include>>
-
-%% === Extend Relation ===
-UC_Register ..> UC_EmailConfirm : <<extend>>
+    %% ==== EXTEND RELATION ====
+    UC_Register -.->|extend| UC_EmailConfirm
 ```
-
-
