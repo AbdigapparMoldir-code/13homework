@@ -2,21 +2,6 @@
 stateDiagram-v2
     [*] --> Idle
 
-    state Idle {
-    }
-
-    state WaitingForMoney {
-    }
-
-    state MoneyReceived {
-    }
-
-    state TicketDispensed {
-    }
-
-    state TransactionCanceled {
-    }
-
     Idle --> WaitingForMoney : Выбор билета / selectTicket()
     WaitingForMoney --> MoneyReceived : Внесение достаточной суммы / insertMoney(amount)
     MoneyReceived --> TicketDispensed : Выдать билет / dispense()
@@ -27,7 +12,7 @@ stateDiagram-v2
     TicketDispensed --> Idle : Завершение / complete()
     TransactionCanceled --> Idle : Сброс / reset()
 
-    %% Optional transition
     MoneyReceived --> WaitingForMoney : Недостаточно денег / awaitMoreMoney()
+
 
 ```
